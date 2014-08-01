@@ -2,12 +2,18 @@ FROM ubuntu
 MAINTAINER Cass Johnston <cassjohnston@gmail.com>
 
 RUN apt-get update
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install vim wget mysql-server apache2 php5 php5-mysql libapache2-mod-php5 php5-cli php-apc php5-intl imagemagick supervisor 
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install vim wget apache2 php5  libapache2-mod-php5 php5-cli php-apc php5-intl imagemagick supervisor
+
+# mysql-server doesn't appear to work from the main repo
+RUN wget http://dev.mysql.com/get/mysql-apt-config_0.2.1-1ubuntu14.04_all.deb
+RUN export DEBIAN_FRONTEND=noninteractive && dpkg -i mysql-apt-config_0.2.1-1ubuntu14.04_all.deb
+RUN apt-get update
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install mysql-server php5-mysql 
+
 RUN wget http://releases.wikimedia.org/mediawiki/1.23/mediawiki-1.23.2.tar.gz
 RUN tar -xvzf mediawiki-1.23.2.tar.gz
 RUN mv mediawiki-1.23.2 /var/www/html/mediawiki
 
-ADD mediawiki_config.sh /usr/bin/mediawiki_config.sh
 ADD php.ini /etc/php5/apache2/php.ini
 
 # create a mount point for a volume and a symlink so you can have the LocalSettings file on the host.
