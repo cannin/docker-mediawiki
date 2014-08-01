@@ -1,0 +1,7 @@
+#/bin/sh
+
+echo "mailhub=${SMTP_SERVER}" >> /etc/ssmtp/ssmtp.conf
+echo "AuthUser=${SMTP_USERNAME}" >>  /etc/ssmtp/ssmtp.conf
+echo "AuthPass=${SMTP_PASSWORD}" >> /etc/ssmtp/ssmtp.conf
+echo "UseTLS=YES" >> /etc/ssmtp/ssmtp.conf
+echo "UseSTARTTLS=YES" >> /etc/ssmtp/ssmtp.conf
