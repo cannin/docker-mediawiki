@@ -13,13 +13,14 @@ RUN alias adduser='useradd' &&  export DEBIAN_FRONTEND=noninteractive && apt-get
 
 RUN wget http://releases.wikimedia.org/mediawiki/1.23/mediawiki-1.23.2.tar.gz
 RUN tar -xvzf mediawiki-1.23.2.tar.gz
-RUN mv mediawiki-1.23.2 /var/www/html/mediawiki
+RUN rm -rf /var/www/html
+RUN mv mediawiki-1.23.2 /var/www/html
 
 ADD php.ini /etc/php5/apache2/php.ini
 
 # create a mount point for a volume and a symlink so you can have the LocalSettings file on the host.
 RUN mkdir /mediawiki_data
-RUN ln -s /mediawiki_data/LocalSettings.php /var/www/html/mediawiki/LocalSettings.php
+RUN ln -s /mediawiki_data/LocalSettings.php /var/www/html/LocalSettings.php
 
 # Enable cgi
 RUN a2enmod cgi
