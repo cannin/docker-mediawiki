@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM ubuntu:trusty
 MAINTAINER Cass Johnston <cassjohnston@gmail.com>
 
 RUN apt-get update
