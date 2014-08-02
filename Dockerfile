@@ -11,15 +11,10 @@ RUN apt-get update
 # wierdness - https://github.com/docker/docker/issues/6345
 RUN alias adduser='useradd' &&  export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install mysql-server php5-mysql 
 
-# Install postfix and setup to work with gmail smtp.
-#RUN export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install  postfix mailutils libsasl2-2 ca-certificates libsasl2-modules 
-#ADD postfix.cf postfix.cf
-#RUN cat postfix.cf >> /etc/postfix/main.cf
-#ADD postfixhack /usr/local/bin/postfixhack
-
-RUN apt-get -q -y install ssmtp
+# ssmtp for mail
+RUN apt-get -q -y install ssmtp mailutils
 ADD ssmtpinit /usr/local/bin/ssmtpinit
-
+RUN chmod +x /usr/local/bin/ssmtpinit
 
 RUN wget http://releases.wikimedia.org/mediawiki/1.23/mediawiki-1.23.2.tar.gz
 RUN tar -xvzf mediawiki-1.23.2.tar.gz
