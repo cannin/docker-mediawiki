@@ -1,4 +1,4 @@
-FROM ubuntu:trusty
+FROM ubuntu:utopic
 MAINTAINER Cass Johnston <cassjohnston@gmail.com>
 
 RUN apt-get update
