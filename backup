@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# Dump the database and web dir into the volume for backup
+# Backups are timestamped, but we only keep the most recent one 
+# you should pull them off the volume and backup to somewhere safe if required
+
+mkdir -p /mediawiki_data/backup
+rm /mediawiki_data/backup/*
+
+TIMESTAMP=$(date -d "today" +"%Y%m%d")
+
+mysqldump -h localhost -u root --password=${MYSQL_ROOT_PASSWORD} --all-databases  | gzip > /mediawiki_data/backup/$TIMESTAMP.sql.gz
+tar -cvzf /mediawiki_data/backup/$TIMESTAMP.www.gz /var/www/html
+

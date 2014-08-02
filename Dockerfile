@@ -6,12 +6,11 @@ RUN apt-get upgrade -y
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install vim wget apache2 php5  libapache2-mod-php5 php5-cli php-apc php5-intl imagemagick supervisor
 
 # mysql-server doesn't appear to work from the main repo
-#RUN wget http://dev.mysql.com/get/mysql-apt-config_0.2.1-1ubuntu14.04_all.deb
-#RUN export DEBIAN_FRONTEND=noninteractive && dpkg -i mysql-apt-config_0.2.1-1ubuntu14.04_all.deb
-#RUN apt-get update
+RUN wget http://dev.mysql.com/get/mysql-apt-config_0.2.1-1ubuntu14.04_all.deb
+RUN export DEBIAN_FRONTEND=noninteractive && dpkg -i mysql-apt-config_0.2.1-1ubuntu14.04_all.deb
+RUN apt-get update
 # wierdness - https://github.com/docker/docker/issues/6345
-#RUN alias adduser='useradd' &&  export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install mysql-server php5-mysql 
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install mysql-server php5-mysql 
+RUN alias adduser='useradd' &&  export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install mysql-server php5-mysql 
 
 # ssmtp for mail
 RUN apt-get -q -y install ssmtp mailutils
@@ -28,6 +27,10 @@ ADD php.ini /etc/php5/apache2/php.ini
 # create a mount point for a volume and a symlink so you can have the LocalSettings file on the host.
 RUN mkdir /mediawiki_data
 RUN ln -s /mediawiki_data/LocalSettings.php /var/www/html/LocalSettings.php
+
+# Add a cron job for backup
+ADD backup /etc/cron.daily/mediawiki_backup
+RUN chmod +x /etc/cron.daily/mediawiki_backup
 
 # Enable cgi
 RUN a2enmod cgi
