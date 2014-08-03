@@ -1,11 +1,14 @@
-FROM ubuntu:utopic
+FROM ubuntu
 MAINTAINER Cass Johnston <cassjohnston@gmail.com>
 
 RUN apt-get update
 RUN apt-get upgrade -y
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install vim wget apache2 php5  libapache2-mod-php5 php5-cli php-apc php5-intl imagemagick supervisor
 
+# https://github.com/docker/docker/issues/6345
+RUN cp /usr/bin/chfn /usr/bin/chfn_bk && ln -s -f /bin/true /usr/bin/chfn
 RUN export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install mysql-server php5-mysql 
+RUN mv /usr/bin/chfn_bk /usr/bin/chfn
 
 # ssmtp for mail
 RUN apt-get -q -y install ssmtp mailutils
