@@ -27,8 +27,8 @@ RUN mkdir /mediawiki_data
 RUN ln -s /mediawiki_data/LocalSettings.php /var/www/html/LocalSettings.php
 
 # Add a cron job for backup
-ADD backup /etc/cron.daily/mediawiki_backup
-RUN chmod +x /etc/cron.daily/mediawiki_backup
+ADD backup /etc/cron.daily/mwbackup
+RUN chmod +x /etc/cron.daily/mwbackup
 
 # Enable cgi
 RUN a2enmod cgi

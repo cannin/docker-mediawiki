@@ -1,4 +1,4 @@
-First attempt at a mediawiki container. No ssl yet and you still have to do manual configuration once it's up and running.
+First attempt at a mediawiki container. No ssl yet and you still have to do manual configuration once it's up and running. Mysql server should really be a separate container and we should probably have a container for any non-static mediawiki data too, but I need to get something up and running so this'll have to do for now. 
 
 docker run -d  -p80:80\ 
 -e "MYSQL_ROOT_PASSWORD=<Your MYSQL Password>" \ 
