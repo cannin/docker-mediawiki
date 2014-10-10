@@ -7,7 +7,7 @@ docker run -d  -p80:80\
 -e "SMTP_PASSWORD=<mypass>"\
 -v /directory/on/host:/mediawiki_data  cassj/mediawiki 
 
-Once your container is running, give it a couple of seconds to start up and then point your browser at http://<dockerhost>/mediawiki
+Once your container is running, give it a couple of seconds to start up and then point your browser at http://dockerhost/mediawiki
 
 Run through the installation and when it gives you a LocalSettings.php file, stick it in the directory you're using as a volume. 
 
