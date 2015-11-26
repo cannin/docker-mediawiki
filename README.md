@@ -9,12 +9,14 @@ No ssl yet and you still have to do manual configuration once it's up and runnin
 
 ## Run Image
 ```
-docker run -d  -p 80:80\ 
--e "MYSQL_ROOT_PASSWORD=<Your MYSQL Password>" \ 
--e "SMTP_SERVER=smtp.gmail.com:587"\ 
--e "SMTP_USERNAME=<me@gmail.com>"\ 
--e "SMTP_PASSWORD=<mypass>"\
--v /directory/on/host:/mediawikiData  cannin/mediawiki 
+docker run -d \
+-p 80:80 \ 
+-e "MYSQL_ROOT_PASSWORD=MYSQL_PASSWORD" \ 
+-e "SMTP_SERVER=smtp.gmail.com:587" \ 
+-e "SMTP_USERNAME=GMAIL_USER" \ 
+-e "SMTP_PASSWORD=GMAIL_PASSWORD" \
+-v HOST_DIR:/mediawikiData \
+cannin/mediawiki 
 ```
 
 ## Access Mediawiki
