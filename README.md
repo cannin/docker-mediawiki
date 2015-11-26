@@ -1,17 +1,39 @@
-First attempt at a mediawiki container. No ssl yet and you still have to do manual configuration once it's up and running. Mysql server should really be a separate container and we should probably have a container for any non-static mediawiki data too, but I need to get something up and running so this'll have to do for now. 
+# Build Image
 
-docker run -d  -p80:80\ 
+```
+docker build -t cannin/mediawiki .
+```
+
+No ssl yet and you still have to do manual configuration once it's up and running. MySQL server should really be a separate container and we should probably have a container for any non-static mediawiki data too.
+
+```
+docker run -d  -p 80:80\ 
 -e "MYSQL_ROOT_PASSWORD=<Your MYSQL Password>" \ 
 -e "SMTP_SERVER=smtp.gmail.com:587"\ 
 -e "SMTP_USERNAME=<me@gmail.com>"\ 
 -e "SMTP_PASSWORD=<mypass>"\
--v /directory/on/host:/mediawiki_data  cassj/mediawiki 
+-v /directory/on/host:/mediawikiData  cannin/mediawiki 
+```
 
+# Access Mediawiki
 Once your container is running, give it a couple of seconds to start up and then point your browser at http://dockerhost/mediawiki
 
+# Install Mediawiki
 Run through the installation and when it gives you a LocalSettings.php file, stick it in the directory you're using as a volume. 
 
-There are some permissions issues running postfix on recent versions of docker. 
-Details at https://github.com/docker/docker/pull/6970.
-Apparently is fixed in git but change doesn't seem to have filtered down to the packaged versions of docker yet.
-Run with --privileged=true and see if it works, if it does then you're hitting this issue. Maybe grab the latest docker from github?
+## NOTE: LocalSettings permissions seem to need change after installation
+```
+chmod 644 works for LocalSettings.php
+```
+
+# Import old content 
+```
+for file in /mediawikiData/export/*.xml
+do
+  php /var/www/html/maintenance/importDump.php < $file
+done
+
+php /var/www/html/maintenance/rebuildrecentchanges.php 
+
+php /var/www/html/maintenance/importImages.php /mediawikiData/imageExport svg png jpg jpeg gif bmp SVG PNG JPG JPEG GIF BMP
+```

@@ -1,13 +1,17 @@
-FROM ubuntu
-MAINTAINER Cass Johnston <cassjohnston@gmail.com>
+FROM ubuntu:14.04.3
 
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install vim wget apache2 php5  libapache2-mod-php5 php5-cli php-apc php5-intl imagemagick supervisor
+##### UBUNTU
+# Update Ubuntu and add extra repositories
+RUN apt-get update && apt-get -y upgrade
+RUN apt-get -y install software-properties-common
+
+# Install basic commands
+RUN apt-get -y install links nano wget git
+RUN apt-get -y install apache2 php5 libapache2-mod-php5 php5-cli php-apc php5-intl imagemagick supervisor
 
 # https://github.com/docker/docker/issues/6345
 RUN cp /usr/bin/chfn /usr/bin/chfn_bk && ln -s -f /bin/true /usr/bin/chfn
-RUN export DEBIAN_FRONTEND=noninteractive && apt-get -q -y install mysql-server php5-mysql 
+RUN export DEBIAN_FRONTEND=noninteractive && apt-get -y install mysql-server php5-mysql 
 RUN mv /usr/bin/chfn_bk /usr/bin/chfn
 
 # ssmtp for mail
@@ -23,8 +27,8 @@ RUN mv mediawiki-1.23.2 /var/www/html
 ADD php.ini /etc/php5/apache2/php.ini
 
 # create a mount point for a volume and a symlink so you can have the LocalSettings file on the host.
-RUN mkdir /mediawiki_data
-RUN ln -s /mediawiki_data/LocalSettings.php /var/www/html/LocalSettings.php
+RUN mkdir /mediawikiData
+RUN ln -s /mediawikiData/LocalSettings.php /var/www/html/LocalSettings.php
 
 # Add a cron job for backup
 ADD backup /etc/cron.daily/mwbackup
